@@ -1,3 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui";
+
+body {
+    background-color: #f3f4f6;
+}
+
+thead tr {
+  position: sticky;
+  top: 0;
+  background-color: #f3f4f6;
+  z-index: 1;
+}
+
+/* For WebKit Browsers (Chrome, Edge, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px; /* Set width */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Light gray background */
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: gray; /* Blue scrollbar */
+    border-radius: 10px;
+  }
+  
+  /* Firefox Scrollbar (Newer versions) */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: gray #f1f1f1;
+  }
+  
