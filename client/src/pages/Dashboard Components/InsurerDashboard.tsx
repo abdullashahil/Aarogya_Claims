@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import type { Claim, ClaimStatus } from "./types/claim";
-import { User, LogOut, FilePen, ChevronDown, ChevronUp, ArrowLeft, RefreshCw } from "lucide-react"; // Import RefreshCw
+import { User, LogOut, FilePen, ChevronDown, ChevronUp, ArrowLeft, RefreshCw } from "lucide-react";
 import LogoutModal from "../../components/LogoutModal";
 import ClaimReviewPanel from "./Insurer Components/ClaimReviewPanel";
 import { toast } from "sonner";
 
 const InsurerDashboard: React.FC = () => {
-  const { email, logout, accessToken } = useAuth(); // Destructure accessToken
+  const { email, logout, accessToken } = useAuth(); 
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,16 +17,14 @@ const InsurerDashboard: React.FC = () => {
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
   const [selectedClaim, setSelectedClaim] = useState<Claim | null>(null);
 
-  // Move fetchClaims outside of useEffect
   const fetchClaims = async (): Promise<void> => {
-    // Skip fetch if accessToken is not available
     if (!accessToken) {
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:4000/claims", {
+      const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -112,11 +110,11 @@ const InsurerDashboard: React.FC = () => {
     comments?: string,
   ): Promise<void> => {
     try {
-      const response = await fetch(`http://localhost:4000/claims/${id}`, {
+      const response = await fetch(`https://aarogya-claims-server.vercel.app/claims/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, // Include accessToken in the header
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ status, approvedAmount, comments }),
       });
@@ -131,10 +129,7 @@ const InsurerDashboard: React.FC = () => {
       );
       setClaims(updatedClaims);
 
-      // Notify user of successful update
       toast.success("Claim updated successfully!");
-
-      // Close the review panel
       setSelectedClaim(null);
     } catch (error: unknown) {
       if (error instanceof Error) {

@@ -18,7 +18,7 @@ const PatientDashboard = () => {
   const fetchClaims = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:4000/claims", {
+      const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -37,7 +37,7 @@ const PatientDashboard = () => {
 
   useEffect(() => {
     fetchClaims();
-  }, [accessToken]); // Re-fetch claims when accessToken changes
+  }, [accessToken]);
 
   // Handle logout
   const handleLogout = () => {
@@ -67,9 +67,8 @@ const PatientDashboard = () => {
             <div className="flex-grow overflow-auto">
               <li className="mb-2">
                 <a
-                  className={`p-3 rounded-lg flex items-center gap-2 ${
-                    activeTab === "my-claims" ? "bg-[#2F7FF2] text-white" : ""
-                  }`}
+                  className={`p-3 rounded-lg flex items-center gap-2 ${activeTab === "my-claims" ? "bg-[#2F7FF2] text-white" : ""
+                    }`}
                   onClick={() => setActiveTab("my-claims")}
                 >
                   <FolderClosed size={20} /> My Claims
@@ -77,9 +76,8 @@ const PatientDashboard = () => {
               </li>
               <li>
                 <a
-                  className={`p-3 rounded-lg flex items-center gap-2 ${
-                    activeTab === "new-claim" ? "bg-[#2F7FF2] text-white" : ""
-                  }`}
+                  className={`p-3 rounded-lg flex items-center gap-2 ${activeTab === "new-claim" ? "bg-[#2F7FF2] text-white" : ""
+                    }`}
                   onClick={() => setActiveTab("new-claim")}
                 >
                   <FilePlus size={20} /> New Claim
@@ -107,11 +105,15 @@ const PatientDashboard = () => {
         {activeTab === "my-claims" && (
           <div>
             {loading ? (
-              <p className="text-center text-gray-500"></p>
-            ) : error ? (
-              <p className="text-center text-red-500">Error: {error}</p>
-            ) : (
-              <MyClaims claims={claims} fetchClaims={fetchClaims} /> 
+              <div className="flex items-center justify-center h-[400px]">
+                <div className="flex flex-col items-center gap-3">
+                  <span className="loading loading-spinner loading-lg text-blue-500"></span>
+                  <p className="text-lg font-semibold text-gray-700">Loading claims...</p>
+                </div>
+              </div>) : error ? (
+                <p className="text-center text-red-500">Error: {error}</p>
+              ) : (
+              <MyClaims claims={claims} fetchClaims={fetchClaims} />
             )}
           </div>
         )}

@@ -11,12 +11,13 @@ import {
   ThemeProvider,
   createTheme,
   CssBaseline,
+  CircularProgress, 
 } from "@mui/material";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 
 const theme = createTheme({
   palette: {
@@ -50,18 +51,17 @@ const Login = () => {
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   const [role, setRole] = useState("patient");
-
+  const [loading, setLoading] = useState(false); 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     const userRole = localStorage.getItem("role");
-  
+
     if (accessToken && userRole && window.location.pathname !== "/dashboard") {
       navigate("/dashboard");
     }
   }, [navigate]);
-  
 
   const handleToggle = () => {
     setIsSignup(!isSignup);
@@ -69,22 +69,25 @@ const Login = () => {
   };
 
   const onSubmit = async (data: any) => {
+    setLoading(true);
     try {
       const endpoint = isSignup
-        ? "http://localhost:4000/users/register"
-        : "http://localhost:4000/auth/login";
-  
+        ? "https://aarogya-claims-server.vercel.app/users/register"
+        : "https://aarogya-claims-server.vercel.app/auth/login";
+
       const payload = isSignup ? { ...data, role } : data;
       const response = await axios.post(endpoint, payload);
-  
+
       if (response.data.access_token && response.data.role) {
-        login(response.data.access_token, response.data.role, response.data.email); // Use AuthContext login
+        login(response.data.access_token, response.data.role, response.data.email);
         toast.success(isSignup ? "Account created successfully!" : "Logged in successfully!");
       }
-  
+
       navigate("/dashboard");
     } catch (error: any) {
       toast.error("Error: " + (error.response?.data?.message || "Something went wrong"));
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -137,8 +140,13 @@ const Login = () => {
 
             <Button
               type="submit" variant="contained" color="primary" fullWidth size="large"
+              disabled={loading} // Disable button when loading
               sx={{ mt: 2, mb: 2, height: "48px", fontSize: "1rem" }}>
-              {isSignup ? "Sign Up" : "Login"}
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} /> // Show spinner when loading
+              ) : (
+                isSignup ? "Sign Up" : "Login"
+              )}
             </Button>
 
             <Button onClick={handleToggle} fullWidth color="primary" variant="text" sx={{ mt: 1 }}>

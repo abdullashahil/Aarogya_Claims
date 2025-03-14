@@ -4,13 +4,13 @@ import { FileText, X, RefreshCw, ChevronUp, ChevronDown } from "lucide-react";
 
 interface PatientDashboardProps {
   claims: Claim[];
-  fetchClaims: () => Promise<void>; // Add fetchClaims as a prop
+  fetchClaims: () => Promise<void>; 
 }
 
 export default function MyClaims({ claims, fetchClaims }: PatientDashboardProps) {
   const [statusFilter, setStatusFilter] = useState<ClaimStatus | "All">("All");
   const [selectedClaim, setSelectedClaim] = useState<Claim | null>(null);
-  const [dateSort, setDateSort] = useState<"asc" | "desc">("desc"); // Add date sort state
+  const [dateSort, setDateSort] = useState<"asc" | "desc">("desc");
 
   const openModal = (claim: Claim) => setSelectedClaim(claim);
   const closeModal = () => setSelectedClaim(null);
