@@ -7,7 +7,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe()); // Enable global validation
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: [
+    'http://localhost:5173',
+    'https://aarogya-claims-management.vercel.app'
+  ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });

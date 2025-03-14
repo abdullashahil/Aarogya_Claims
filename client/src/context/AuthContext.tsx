@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isMounted = useRef(false);
 
   useEffect(() => {
-    if (isMounted.current) return; // Prevent re-execution
+    if (isMounted.current) return;
     isMounted.current = true;
 
     const storedAccessToken = localStorage.getItem("access_token");
@@ -44,8 +44,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    console.log("Logging out...");
-
     localStorage.removeItem("access_token");
     localStorage.removeItem("role");
     localStorage.removeItem("email");
