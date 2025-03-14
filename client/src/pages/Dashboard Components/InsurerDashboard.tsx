@@ -7,7 +7,7 @@ import ClaimReviewPanel from "./Insurer Components/ClaimReviewPanel";
 import { toast } from "sonner";
 
 const InsurerDashboard: React.FC = () => {
-  const { email, logout, accessToken } = useAuth(); 
+  const { email, logout, accessToken } = useAuth();
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,6 +16,7 @@ const InsurerDashboard: React.FC = () => {
   const [amountSort, setAmountSort] = useState<"asc" | "desc" | null>(null);
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
   const [selectedClaim, setSelectedClaim] = useState<Claim | null>(null);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const fetchClaims = async (): Promise<void> => {
     if (!accessToken) {
@@ -23,6 +24,7 @@ const InsurerDashboard: React.FC = () => {
       return;
     }
 
+    setRefreshing(true);
     try {
       const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
         headers: {
@@ -44,13 +46,14 @@ const InsurerDashboard: React.FC = () => {
       }
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
   // Fetch claims on component mount
   useEffect(() => {
     fetchClaims();
-  }, [accessToken]); // Add accessToken as a dependency
+  }, [accessToken]);
 
   if (error) {
     return <div className="text-center p-6 text-red-500">Error: {error}</div>;
@@ -232,12 +235,14 @@ const InsurerDashboard: React.FC = () => {
                       <option value="Approved">Approved</option>
                       <option value="Rejected">Rejected</option>
                     </select>
-                    
+
+                    {/* Refresh Button */}
                     <button
                       className="flex items-center justify-center h-10 w-10 p-2 text-gray-600 rounded-sm border border-gray-300 cursor-pointer hover:bg-gray-100"
                       onClick={fetchClaims}
+                      disabled={refreshing}
                     >
-                      <RefreshCw className="h-5 w-5" /> 
+                      <RefreshCw className={`h-5 w-5 ${refreshing ? "animate-spin" : ""}`} />
                     </button>
                   </div>
                   {filteredClaims.length === 0 ? (
