@@ -1,19 +1,33 @@
 import { useState } from "react";
 import type { Claim, ClaimStatus } from "../types/claim";
 import { FileText, X, RefreshCw, ChevronUp, ChevronDown } from "lucide-react";
+import { toast } from "sonner";
 
 interface PatientDashboardProps {
   claims: Claim[];
-  fetchClaims: () => Promise<void>; 
+  fetchClaims: () => Promise<void>;
 }
 
 export default function MyClaims({ claims, fetchClaims }: PatientDashboardProps) {
   const [statusFilter, setStatusFilter] = useState<ClaimStatus | "All">("All");
   const [selectedClaim, setSelectedClaim] = useState<Claim | null>(null);
   const [dateSort, setDateSort] = useState<"asc" | "desc">("desc");
+  const [loading, setLoading] = useState(false);
 
   const openModal = (claim: Claim) => setSelectedClaim(claim);
   const closeModal = () => setSelectedClaim(null);
+
+  // Handle refresh button click
+  const handleRefresh = async () => {
+    setLoading(true);
+    try {
+      await fetchClaims(); // Fetch claims
+    } catch (error) {
+      toast.error("Failed to fetch claims. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter claims based on status
   const filteredClaims =
@@ -71,62 +85,75 @@ export default function MyClaims({ claims, fetchClaims }: PatientDashboardProps)
               <option value="Rejected">Rejected</option>
             </select>
             <button
-              className="flex items-center justify-center h-10 w-10 p-2 px-3 text-gray-600 rounded-sm border border-gray-300 cursor-pointer hover:bg-gray-100"
-              onClick={fetchClaims}
+              className="flex items-center justify-center h-10 w-10 p-2 text-gray-600 rounded-sm border border-gray-300 cursor-pointer hover:bg-gray-100"
+              onClick={handleRefresh} // Use handleRefresh instead of fetchClaims
+              disabled={loading} // Disable button when loading
             >
               <RefreshCw className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        {/* No Claims Found */}
-        {filteredClaims.length === 0 ? (
-          <div className="alert alert-info bg-blue-100 text-blue-800 border-blue-300">
-            <span>No claims found. Submit a new claim to get started.</span>
+        {/* Loading State */}
+        {loading ? (
+          <div className="flex items-center justify-center h-[400px]">
+            <div className="flex flex-col items-center gap-3">
+              <span className="loading loading-spinner loading-lg text-blue-500"></span>
+              <p className="text-lg font-semibold text-gray-700">Loading claims...</p>
+            </div>
           </div>
         ) : (
-          <div className="overflow-x-auto h-[65vh] overflow-y-auto custom-scrollbar">
-            <table className="table w-full">
-              <thead>
-                <tr className="bg-gray-200 text-gray-800">
-                  <th onClick={toggleDateSort} className="cursor-pointer">
-                    Date{" "}
-                    {dateSort === "asc" ? (
-                      <ChevronUp size={16} className="inline" />
-                    ) : (
-                      <ChevronDown size={16} className="inline" />
-                    )}
-                  </th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Approved Amount</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedClaims.map((claim) => (
-                  <tr key={claim._id} className="border-b border-gray-300 hover:bg-gray-100">
-                    <td className="text-gray-700">{formatDate(claim.submissionDate)}</td>
-                    <td className="text-gray-700">₹{claim.claimAmount.toFixed(2)}</td>
-                    <td>
-                      <span className={getStatusBadgeClass(claim.status)}>{claim.status}</span>
-                    </td>
-                    <td className="text-gray-700">
-                      {claim.approvedAmount !== undefined ? `₹${claim.approvedAmount.toFixed(2)}` : "-"}
-                    </td>
-                    <td>
-                      <button
-                        className="btn bg-transparent text-[#2F7FF2] hover:bg-[#2F7FF2] hover:text-white border border-[#2F7FF2] shadow-none btn-sm"
-                        onClick={() => openModal(claim)}
-                      >
-                        Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <>
+            {/* No Claims Found */}
+            {filteredClaims.length === 0 ? (
+              <div className="alert alert-info bg-blue-100 text-blue-800 border-blue-300">
+                <span>No claims found. Submit a new claim to get started.</span>
+              </div>
+            ) : (
+              <div className="overflow-x-auto h-[65vh] overflow-y-auto custom-scrollbar">
+                <table className="table w-full">
+                  <thead>
+                    <tr className="bg-gray-200 text-gray-800">
+                      <th onClick={toggleDateSort} className="cursor-pointer">
+                        Date{" "}
+                        {dateSort === "asc" ? (
+                          <ChevronUp size={16} className="inline" />
+                        ) : (
+                          <ChevronDown size={16} className="inline" />
+                        )}
+                      </th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Approved Amount</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedClaims.map((claim) => (
+                      <tr key={claim._id} className="border-b border-gray-300 hover:bg-gray-100">
+                        <td className="text-gray-700">{formatDate(claim.submissionDate)}</td>
+                        <td className="text-gray-700">₹{claim.claimAmount.toFixed(2)}</td>
+                        <td>
+                          <span className={getStatusBadgeClass(claim.status)}>{claim.status}</span>
+                        </td>
+                        <td className="text-gray-700">
+                          {claim.approvedAmount !== undefined ? `₹${claim.approvedAmount.toFixed(2)}` : "-"}
+                        </td>
+                        <td>
+                          <button
+                            className="btn bg-transparent text-[#2F7FF2] hover:bg-[#2F7FF2] hover:text-white border border-[#2F7FF2] shadow-none btn-sm"
+                            onClick={() => openModal(claim)}
+                          >
+                            Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
         )}
       </div>
 
