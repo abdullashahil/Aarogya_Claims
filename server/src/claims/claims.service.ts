@@ -20,8 +20,8 @@ export class ClaimsService {
 
   async update(id: string, updateClaimDto: UpdateClaimDto): Promise<Claim> {
     const updatedClaim = await this.claimModel
-      .findByIdAndUpdate(id, updateClaimDto, { new: true })
-      .exec();
+    .findByIdAndUpdate(id, updateClaimDto, { new: true })
+    .exec();
     if (!updatedClaim) {
       throw new NotFoundException('Claim not found');
     }

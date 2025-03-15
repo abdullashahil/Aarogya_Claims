@@ -10,6 +10,6 @@ export interface Claim {
   status: ClaimStatus
   submissionDate: string
   approvedAmount?: number
-  comments?: string
+  insurerComments?: string
 }
 

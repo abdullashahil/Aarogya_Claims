@@ -2,18 +2,24 @@
 
 A full-stack claims management system that enables patients to submit insurance claims and insurers to review and process them. Built using **React.js**, **NestJS**, **MongoDB**, and **JWT-based authentication**.
 
+## 🌐 Deployment Links
+
+- **Frontend Deployment**: [🔗 Live App](https://aarogya-claims-management.vercel.app/)
+- **Backend API**: [🔗 API Server](http://localhost:4000/)
+- **Video Demo**: [▶️ Walkthrough Video](your-video-demo-link)
+
 ## 📜 Table of Contents
 
 - [🚀 Features](#-features)
   - [✅ Patient Side](#-patient-side)
   - [✅ Insurer Side](#-insurer-side)
   - [✅ Shared Features](#-shared-features)
+- [🔒 Authentication](#-authentication)
 - [🛠 Tech Stack](#-tech-stack)
 - [📂 Folder Structure](#-folder-structure)
 - [⚙️ Installation](#-installation)
   - [Server Setup (NestJS)](#server-setup-nestjs)
   - [Client Setup (React)](#client-setup-react)
-- [🔒 Authentication](#-authentication)
 - [🔗 API Endpoints](#-api-endpoints)
 - [🧪 Testing](#-testing)
 
@@ -38,6 +44,19 @@ A full-stack claims management system that enables patients to submit insurance 
 - **REST API**: Endpoints for claims and authentication.
 - **Responsive UI**: Built using Tailwind CSS and DaisyUI.
 
+## 🔒 Authentication
+
+### Mock User Sample Data
+
+| Role     | Email               | Password   |
+|----------|---------------------|------------|
+| Patient  | patient@example.com | patient123 |
+| Insurer  | insurer@example.com | insurer123 |
+
+- Patients can submit claims and view status.
+- Insurers can review, approve/reject claims.
+- If user registration is not available, admin must create accounts manually.
+
 ## 🛠 Tech Stack
 
 | Technology  | Purpose  |
@@ -54,7 +73,7 @@ A full-stack claims management system that enables patients to submit insurance 
 
 ```
 Aarogya-Claims/
-│── client/              # Client (React)
+│── client/              # Client (React (typescript))
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
@@ -112,17 +131,6 @@ Aarogya-Claims/
     ```
     Open http://localhost:5173
     ```
-
-## 🔒 Authentication
-
-| Role     | Credentials |
-|----------|-------------|
-| Patient  | patient@gmail.com / patient123 |
-| Insurer  | insurer@gmail.com / insurer123 |
-
-- Patients can submit claims and view status.
-- Insurers can review, approve/reject claims.
-- If user registration is not available, admin must create accounts manually.
 
 ## 🔗 API Endpoints
 

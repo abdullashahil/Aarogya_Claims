@@ -155,7 +155,7 @@ function MyClaims({ claims, fetchClaims }: PatientDashboardProps) {
             <div className="mt-2 p-2 bg-gray-100 rounded-md">
               <p className="text-md font-semibold">Comments:</p>
               <p className="text-md text-gray-700">
-                {selectedClaim.comments ? selectedClaim.comments : "No comments"}
+                {selectedClaim.insurerComments ? selectedClaim.insurerComments : "No comments"}
               </p>
             </div>
             {selectedClaim.documentUrl && (

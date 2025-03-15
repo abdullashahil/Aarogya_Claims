@@ -72,8 +72,8 @@ const Login = () => {
     setLoading(true);
     try {
       const endpoint = isSignup
-        ? "https://aarogya-claims-server.vercel.app/users/register"
-        : "https://aarogya-claims-server.vercel.app/auth/login";
+        ? "http://localhost:4000/users/register"
+        : "http://localhost:4000/auth/login";
 
       const payload = isSignup ? { ...data, role } : data;
       const response = await axios.post(endpoint, payload);

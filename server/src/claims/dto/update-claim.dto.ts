@@ -11,5 +11,5 @@ export class UpdateClaimDto {
 
   @IsOptional()
   @IsString()
-  readonly comments?: string;
+  readonly insurerComments?: string;
 }

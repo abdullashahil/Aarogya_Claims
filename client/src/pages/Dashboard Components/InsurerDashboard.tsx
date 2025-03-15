@@ -26,7 +26,7 @@ const InsurerDashboard: React.FC = () => {
 
     setRefreshing(true);
     try {
-      const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
+      const response = await fetch("http://localhost:4000/claims", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -110,16 +110,16 @@ const InsurerDashboard: React.FC = () => {
     id: string,
     status: ClaimStatus,
     approvedAmount?: number,
-    comments?: string,
+    insurerComments?: string,
   ): Promise<void> => {
     try {
-      const response = await fetch(`https://aarogya-claims-server.vercel.app/claims/${id}`, {
+      const response = await fetch(`http://localhost:4000/claims/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ status, approvedAmount, comments }),
+        body: JSON.stringify({ status, approvedAmount, insurerComments }),
       });
 
       if (!response.ok) {
@@ -128,7 +128,7 @@ const InsurerDashboard: React.FC = () => {
 
       // Update the claims list
       const updatedClaims: Claim[] = claims.map((claim) =>
-        claim._id === id ? { ...claim, status, approvedAmount, comments } : claim,
+        claim._id === id ? { ...claim, status, approvedAmount, insurerComments } : claim,
       );
       setClaims(updatedClaims);
 

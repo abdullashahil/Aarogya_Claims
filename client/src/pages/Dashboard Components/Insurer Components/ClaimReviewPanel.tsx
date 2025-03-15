@@ -5,7 +5,7 @@ import { ExternalLink } from "lucide-react";
 
 interface ClaimReviewPanelProps {
     claim: Claim | null
-    onUpdateClaim: (_id: string, status: ClaimStatus, approvedAmount?: number, comments?: string) => void
+    onUpdateClaim: (_id: string, status: ClaimStatus, approvedAmount?: number, insurerComments?: string) => void
     onClose: () => void
 }
 
@@ -14,7 +14,7 @@ export default function ClaimReviewPanel({ claim, onUpdateClaim, onClose }: Clai
     const [approvedAmount, setApprovedAmount] = useState<string>(
         claim?.approvedAmount !== undefined ? claim.approvedAmount.toString() : "",
     )
-    const [comments, setComments] = useState<string>(claim?.comments || "")
+    const [insurerComments, setInsurerComments] = useState<string>(claim?.insurerComments || "")
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     if (!claim) return null
@@ -23,7 +23,7 @@ export default function ClaimReviewPanel({ claim, onUpdateClaim, onClose }: Clai
         e.preventDefault()
         setIsSubmitting(true)
 
-        onUpdateClaim(claim._id, status, status === "Approved" ? Number.parseFloat(approvedAmount) : undefined, comments)
+        onUpdateClaim(claim._id, status, status === "Approved" ? Number.parseFloat(approvedAmount) : undefined, insurerComments)
 
         setIsSubmitting(false)
         onClose()
@@ -181,8 +181,8 @@ export default function ClaimReviewPanel({ claim, onUpdateClaim, onClose }: Clai
                             <textarea
                                 placeholder="Add comments for the patient"
                                 className="w-full p-2 max-h-40 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-                                value={comments}
-                                onChange={(e) => setComments(e.target.value)}
+                                value={insurerComments}
+                                onChange={(e) => setInsurerComments(e.target.value)}
                                 rows={3}
                             ></textarea>
                         </div>

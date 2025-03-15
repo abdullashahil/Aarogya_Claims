@@ -30,5 +30,5 @@ export class CreateClaimDto {
 
   @IsOptional()
   @IsString()
-  readonly comments?: string;
+  readonly insurerComments?: string;
 }
