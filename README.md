@@ -6,7 +6,7 @@ A full-stack claims management system that enables patients to submit insurance 
 
 - **Frontend Deployment**: [🔗 Live App](https://aarogya-claims-management.vercel.app/)
 - **Backend API**: [🔗 API Server](https://aarogya-claims-server.vercel.app/)
-- **Video Demo**: [▶️ Walkthrough Video](your-video-demo-link)
+- **Video Demo**: [▶️ Walkthrough Video](https://drive.google.com/file/d/1i7TKOK1aMZ3WTqzEVEWXGU-wpsgB0jTU/view?usp=sharing)
 
 ## 📜 Table of Contents
 
