@@ -60,7 +60,7 @@ export default function ClaimSubmissionForm({ setActiveTab, fetchClaims }: Claim
       };
 
       
-      const response = await fetch("http://localhost:4000/claims", {
+      const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

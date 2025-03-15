@@ -18,7 +18,7 @@ const PatientDashboard = () => {
   const fetchClaims = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:4000/claims", {
+      const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

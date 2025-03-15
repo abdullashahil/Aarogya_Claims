@@ -26,7 +26,7 @@ const InsurerDashboard: React.FC = () => {
 
     setRefreshing(true);
     try {
-      const response = await fetch("http://localhost:4000/claims", {
+      const response = await fetch("https://aarogya-claims-server.vercel.app/claims", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -113,7 +113,7 @@ const InsurerDashboard: React.FC = () => {
     insurerComments?: string,
   ): Promise<void> => {
     try {
-      const response = await fetch(`http://localhost:4000/claims/${id}`, {
+      const response = await fetch(`https://aarogya-claims-server.vercel.app/claims/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
